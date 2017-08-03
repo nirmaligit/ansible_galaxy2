@@ -1,0 +1,18 @@
+- hosts: localhost
+  gather_facts: False
+  tasks:
+    - fail: msg="Check svc is defined"
+      when: svc is not defined
+
+- name: create new ec2 {{svc}} VMs
+  hosts: ec2_client
+  connection: local
+  vars:
+    ec2_image_name: "{{ ec2_images['centos7'] }}"
+    ec2_host_type: "centos7"
+    ec2_user_data: "{{ user_datas['centos7'] }}"
+  vars_files:
+    - group_vars/ec2/svc/{{ svc }}
+  roles:
+    - role: ec2_vm
+      tags: create_vm

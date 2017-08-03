@@ -1,0 +1,17 @@
+ALERT InstanceDown
+  IF up == 0
+  FOR 5m
+  LABELS { severity = "page" }
+  ANNOTATIONS {
+     summary = "Instance {{ $labels.instance }} down",
+     description = "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 5 minutes.",
+   }
+
+ALERT mongo_replica_down
+  IF mongodb_replset_member_health == 0
+  FOR 1m
+  LABELS { severity = "page" }
+  ANNOTATIONS {
+     summary = "Instance {{ $labels.name }} down",
+     description = "{{ $labels.name }} of job {{ $labels.job }} has been down for more than 1 minute.",
+  }

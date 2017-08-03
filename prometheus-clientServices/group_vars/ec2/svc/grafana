@@ -1,0 +1,7 @@
+ec2_vm_str: cs_grafana
+ec2_instance_type: m4.large
+ec2_vms: 1
+ec2_meta:
+  services: "cs_grafana"
+volume_to_mount: /grafana
+volume_size_in_gb: 50

@@ -1,0 +1,16 @@
+---
+# Install prometheus, configured with alerts and exporters.
+- hosts: prometheus
+  remote_user: root
+  roles:
+    - prometheus
+  vars:
+    clientservices_slack_channel: melrin
+
+# Install grafana, and register the prometheus instance as a datasource.
+- hosts: grafana
+  remote_user: root
+  roles:
+    - grafana
+  vars:
+    prometheus_hosts: "{{ groups['prometheus'] }}"

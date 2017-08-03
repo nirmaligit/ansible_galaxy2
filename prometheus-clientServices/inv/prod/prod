@@ -1,0 +1,6 @@
+[cs_prometheus]
+tests
+
+[cs_prometheus:vars]
+[cs_grafana]
+[cs_grafana:vars]

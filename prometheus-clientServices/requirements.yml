@@ -1,0 +1,27 @@
+# from GitHub
+- src: git@github.comcast.com:merlin-ansible/prometheus.git
+  scm: git
+
+- src: git@github.comcast.com:merlin-ansible/grafana.git
+  scm: git
+
+- src: git@github.comcast.com:merlin-ansible/prometheus-mongodb-exporter.git
+  scm: git
+
+- src: git@github.comcast.com:merlin-ansible/images_centos7.git
+  scm: git
+
+- src: git@github.comcast.com:merlin-ansible/iptables_marking.git
+  scm: git
+
+- src: git@github.comcast.com:merlin-ansible/sysctl_tuning.git
+  scm: git
+
+- src: git@github.comcast.com:merlin-ansible/ec2_vm.git
+  scm: git
+
+- src: git@github.comcast.com:merlin-ansible/ec2_mounted_volume.git
+  scm: git
+
+- src: git@github.comcast.com:merlin-ansible/ec2_hostname.git
+  scm: git

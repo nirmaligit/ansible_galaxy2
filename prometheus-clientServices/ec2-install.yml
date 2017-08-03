@@ -1,0 +1,15 @@
+- hosts: localhost
+  gather_facts: False
+  tasks:
+    - fail: msg="boolean bootstrap argument is required."
+      when: bootstrap is not defined
+
+- include: identify_aws_hosts.yml svc=prometheus
+- include: identify_aws_hosts.yml svc=grafana
+
+- include: bootstrap_aws_hosts.yml svc=prometheus
+  when: bootstrap
+- include: bootstrap_aws_hosts.yml svc=grafana
+  when: bootstrap
+
+- include: install.yml

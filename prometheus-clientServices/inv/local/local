@@ -1,0 +1,22 @@
+[cs_prometheus]
+localhost
+
+[cs_prometheus:vars]
+install_directory="~/ansible-install"
+config_directory="~/ansible-conf"
+# prevents sudo usage locally, which will fail due to no password
+ansible_become=false
+subscriberDS_mongo_exporters=["10.36.122.158:9100","10.36.122.158:9200","10.36.122.158:9300", "10.36.122.158:9400", "10.36.122.158:9500"]
+
+[cs_grafana]
+localhost
+[cs_grafana:vars]
+prometheus_instances="10.36.122.158:9090"
+
+[mongo-exporter]
+localhost
+[mongo-exporter:vars]
+mongodb_instances=["cmpmer-c2-c00290-g.ch.tvx.comcast.com:27028","cmpmer-c2-c00291-g.ch.tvx.comcast.com:27028","cmpmer-c2-c00292-g.ch.tvx.comcast.com:27028","cmpmer-b4-cb149-g.br.ccp.cable.comcast.com:27028","cmpmer-p3-cb0103-g.po.ccp.cable.comcast.com:27028"]
+exporter_ports=[9100, 9200, 9300, 9400, 9500]
+
+

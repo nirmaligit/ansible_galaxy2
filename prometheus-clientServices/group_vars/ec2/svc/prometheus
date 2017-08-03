@@ -1,0 +1,7 @@
+ec2_vm_str: cs_prometheus
+ec2_instance_type: r4.large
+ec2_vms: 1
+ec2_meta:
+  services: "cs_prometheus"
+volume_to_mount: /prometheus
+volume_size_in_gb: 100

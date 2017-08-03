@@ -1,0 +1,59 @@
+- name: Bootstrap VMs
+  hosts: "{{ svc }}"
+  roles:
+    - role: images_centos7
+    - role: iptables_marking
+      tags: iptables_marking
+    - role: sysctl_tuning
+      tags: sysctl_tuning
+  vars:
+    docker_engine_version: 17.06.0.ce-1.el7.centos
+
+- hosts: "{{ svc }}"
+  tasks:
+  - name: conditionally run ec2_mounted_volume
+    include_role:
+      name: ec2_mounted_volume
+    when: mount_ec2_volume is defined
+    tags: ec2_volume
+
+- name: assign hostnames to ec2 instances
+  hosts: ec2_client
+  strategy: debug
+  connection: local
+  vars:
+    ec2_image_name: "{{ ec2_images['centos7'] }}"
+    ec2_host_type: "centos7"
+    ec2_user_data: "{{ user_datas['centos7'] }}"
+  vars_files:
+    - group_vars/ec2/svc/{{ svc }}
+  tasks:
+      - name: get host name from Name tag
+        ec2_remote_facts:
+          filters:
+          # NOTE may need to add this if there are terminated machines hanging around
+            "instance-state-name": "running"
+            "tag:Name": "{{ ec2_vm_prefix }}-{{ ec2_vm_str }}"
+        register: ec2_facts
+
+      - name: Add new instance to host group
+        add_host:
+          hostname: "{{ item.private_ip_address}}"
+          groupname: running_hosts
+        with_items: "{{ ec2_facts.instances }}"
+
+- name: assign hostnames to ec2 instances
+  hosts: "{{ svc }}"
+  strategy: debug
+  vars:
+    ec2_image_name: "{{ ec2_images['centos7'] }}"
+    ec2_host_type: "centos7"
+    ec2_user_data: "{{ user_datas['centos7'] }}"
+    # http://stackoverflow.com/questions/33896847/how-do-i-set-register-a-variable-to-persist-between-plays-in-ansible
+    ec2_vm_prefix: "{{ hostvars['localhost']['ec2_vm_prefix'] }}"
+  vars_files:
+    - group_vars/ec2/svc/{{ svc }}
+  roles:
+    - role: ec2_hostname
+      tags: configure_hostnames
+  serial: "{{ '100%' if (deploy_all_at_once|default(False)) else ((creating_vms|default('no') == 'yes') |ternary('100%', '33%')) }}"
