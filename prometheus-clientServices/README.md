@@ -27,4 +27,4 @@ ansible-playbook -i inv/merlin-compass-us-east/merlin-compass-us-east ec2-instal
 Author Information
 ------------------
 
-Chennai
+Karnatak
